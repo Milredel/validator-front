@@ -11,5 +11,5 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'validator-front';
+  title = 'ValidatoR';
 }
