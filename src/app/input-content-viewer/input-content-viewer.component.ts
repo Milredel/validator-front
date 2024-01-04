@@ -16,7 +16,7 @@ export class InputContentViewerComponent {
     data = []
     reasons = []
 
-    displayedColumns: string[] = ['date']
+    displayedColumns: string[] = ['date', 'label', 'amount']
 
     dataSource = []
 
