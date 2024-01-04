@@ -6,6 +6,8 @@ import { Utils } from '../common/utils';
 import { Line } from '../types/line.type';
 import { Reasons } from '../interfaces/reasons.interface';
 import { MatIconModule } from '@angular/material/icon';
+import { DataSource } from '@angular/cdk/collections';
+import { ReplaySubject, Observable } from 'rxjs';
 
 @Component({
     selector: 'app-input-content-viewer',
@@ -22,7 +24,7 @@ export class InputContentViewerComponent {
 
     displayedColumns: string[] = ['date', 'label', 'amount']
 
-    dataSource: Line[] = [] as unknown as Line[]
+    dataSource = new LineDataSource(this.data);
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['validationResponse']) {
@@ -30,7 +32,7 @@ export class InputContentViewerComponent {
             this.data = currentValue.content || []
             this.reasons = currentValue.reasons || {}
             if (this.hasErrors()) this.displayedColumns.push('actions')
-            this.dataSource = this.data
+            this.dataSource.setData(this.data)
         }
     }
 
@@ -42,8 +44,28 @@ export class InputContentViewerComponent {
         return duplicates.filter((line) => Utils.compareObjects(line, element)).length > 0
     }
 
-    deleteLine = (element: Line): void => {
-        console.log(element)
+    deleteLineAtIndex = (index: number): void => {
+        this.data.splice(index, 1);
+        this.dataSource.setData(this.data);
     }
 
+}
+
+class LineDataSource extends DataSource<Line> {
+    private _dataStream = new ReplaySubject<Line[]>();
+
+    constructor(initialData: Line[]) {
+        super();
+        this.setData(initialData);
+    }
+
+    connect(): Observable<Line[]> {
+        return this._dataStream;
+    }
+
+    disconnect() {}
+
+    setData(data: Line[]) {
+        this._dataStream.next(data);
+    }
 }
