@@ -1,4 +1,4 @@
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8 mb-4">
 
     <table mat-table [dataSource]="dataSource">
 
@@ -32,3 +32,8 @@
     </table>
 
 </div>
+
+<div *ngIf="!hasErrors() else congratsContainer" class="p-4 bg-green-400">Parfait, rien à signaler sur ce fichier !</div>
+<ng-template #congratsContainer>
+    <div class="p-4 bg-red-400">Des erreurs ont été trouvées. Merci de corriger.</div>
+</ng-template>

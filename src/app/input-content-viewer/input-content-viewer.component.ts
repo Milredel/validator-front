@@ -2,6 +2,7 @@ import { Component, Input, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ValidationResponseType } from '../types/validation-response.type';
 import { MatTableModule } from '@angular/material/table';
+import { Utils } from '../common/utils';
 
 @Component({
     selector: 'app-input-content-viewer',
@@ -14,7 +15,7 @@ export class InputContentViewerComponent {
     @Input() validationResponse: ValidationResponseType = {statusCode: 200};
 
     data = []
-    reasons = []
+    reasons = {}
 
     displayedColumns: string[] = ['date', 'label', 'amount']
 
@@ -24,8 +25,12 @@ export class InputContentViewerComponent {
         if (changes['validationResponse']) {
             const currentValue = changes['validationResponse'].currentValue
             this.data = currentValue.content || []
-            this.reasons = currentValue.reasons || []
+            this.reasons = currentValue.reasons || {}
+            console.log(this.reasons)
             this.dataSource = this.data
         }
     }
+
+    hasErrors = (): boolean => !Utils.isEmpty(this.reasons)
+
 }
