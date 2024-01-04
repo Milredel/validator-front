@@ -26,7 +26,7 @@ export class InputContentViewerComponent {
             const currentValue = changes['validationResponse'].currentValue
             this.data = currentValue.content || []
             this.reasons = currentValue.reasons || {}
-            console.log(this.reasons)
+            if (this.hasErrors()) this.displayedColumns.push('actions')
             this.dataSource = this.data
         }
     }
