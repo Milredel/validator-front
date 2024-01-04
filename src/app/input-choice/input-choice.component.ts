@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
+import { BackEndService } from '../services/backend.service';
 
 @Component({
     selector: 'app-input-choice',
@@ -16,7 +16,7 @@ export class InputChoiceComponent {
     @Input() requiredFileType = 'application/JSON';
     @Output() onServerFileNameReceived = new EventEmitter<any>();
 
-    constructor(private http: HttpClient) {}
+    constructor(private backEndService: BackEndService) {}
 
     onFileSelected(event: any): void {
         const file:File = event.target.files[0];
@@ -24,11 +24,11 @@ export class InputChoiceComponent {
             this.fileName = file.name;
             const formData = new FormData();
             formData.append("file", file);
-            this.http.post<{fileName: string}>("http://localhost:3000/file", formData).subscribe(data => {
+            this.backEndService.postFile(formData).subscribe(data => {
                 const { fileName } = data
                 this.serverFileName = fileName || ''
                 this.onServerFileNameReceived.emit(this.serverFileName)
-        }   );
+            });
         }
     }
 
