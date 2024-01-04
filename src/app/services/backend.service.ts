@@ -1,14 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Reasons } from '../interfaces/reasons.interface';
-import { ValidationData } from '../interfaces/validation-data.interface';
-
-type ValidationResponseType = {
-    statusCode: number,
-    reasons?: Reasons,
-    content?: ValidationData,
-    message?: any
-}
+import { HttpClient } from '@angular/common/http';
+import { ValidationResponseType } from '../types/validation-response.type';
   
 @Injectable({
   providedIn: 'root'

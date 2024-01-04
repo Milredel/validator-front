@@ -1,1 +1,11 @@
-tagada {{ fileName }}
+@if (isLoading) {
+    <mat-progress-spinner
+        class="example-margin"
+        color="primary"
+        mode="indeterminate">
+    </mat-progress-spinner>
+}
+
+@if (!isLoading) {
+    <app-input-content-viewer [validationResponse]="validationResponse"/>
+}
