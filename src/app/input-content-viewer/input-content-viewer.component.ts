@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { DataSource } from '@angular/cdk/collections';
 import { ReplaySubject, Observable } from 'rxjs';
 import { Balance } from '../interfaces/balance.interface';
+import { BalanceError } from '../interfaces/balance-error.interface';
 
 @Component({
     selector: 'app-input-content-viewer',
@@ -51,8 +52,7 @@ export class InputContentViewerComponent {
         !this.reasons.balances ? false : this.reasons.balances.filter((line) => line.end.date === element.date).length > 0
 
     correctBalanceAtIndex = (index: number): void => {
-        const currentBalance = this.data[index] as Balance;
-        const balanceError = this.reasons.balances.find((line) => line.end.date === currentBalance.date);
+        const balanceError = this.getBalanceErrorFromLineIndex(index)
         if (balanceError) {
             (this.data[index] as Balance).balance = balanceError.diff.computed;
             this.dataSource.setData(this.data);
@@ -61,8 +61,13 @@ export class InputContentViewerComponent {
 
     getCorrectBalance = (index: number): number => {
         const currentBalance = this.data[index] as Balance;
-        const balanceError = this.reasons.balances.find((line) => line.end.date === currentBalance.date);
+        const balanceError = this.getBalanceErrorFromLineIndex(index)
         return balanceError ? balanceError.diff.computed : currentBalance.balance
+    }
+
+    getBalanceErrorFromLineIndex = (index: number): BalanceError | undefined => {
+        const currentBalance = this.data[index] as Balance;
+        return this.reasons.balances.find((line) => line.end.date === currentBalance.date);
     }
 
 }
