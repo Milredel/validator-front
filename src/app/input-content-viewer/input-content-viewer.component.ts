@@ -12,17 +12,19 @@ import { Balance } from '../interfaces/balance.interface';
 import { BalanceError } from '../interfaces/balance-error.interface';
 import { ValidationData } from '../interfaces/validation-data.interface';
 import { Movement } from '../interfaces/movement.interface';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
     selector: 'app-input-content-viewer',
     standalone: true,
-    imports: [CommonModule, MatTableModule, MatIconModule],
+    imports: [CommonModule, MatTableModule, MatIconModule, MatButtonModule],
     templateUrl: './input-content-viewer.component.html',
 })
 export class InputContentViewerComponent {
 
     @Input() validationResponse: ValidationResponseType = {statusCode: 200};
     @Output() onValidationDataChanged = new EventEmitter<ValidationData>();
+    @Input() isFromRevalidation = false;
 
     data: Line[] = [] as unknown as Line[]
     reasons: Reasons = {} as unknown as Reasons
@@ -88,6 +90,11 @@ export class InputContentViewerComponent {
             }
             return acc
         }, {movements: [], balances: []} as ValidationData)
+    }
+
+    downloadCorrectedFile = (): void => {
+        console.log('tagada')
+        console.log(this.data)
     }
 
 }

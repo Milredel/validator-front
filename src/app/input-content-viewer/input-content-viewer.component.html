@@ -35,10 +35,10 @@
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let element; let index = index" class="!text-end">
-                <button *ngIf="isBalanceWrong(element)" (click)="correctBalanceAtIndex(index)" mat-mini-fab color="primary" class="upload-btn" title="Corriger la balance">
+                <button *ngIf="isBalanceWrong(element)" (click)="correctBalanceAtIndex(index)" mat-icon-button color="primary" title="Corriger la balance">
                     <mat-icon>edit</mat-icon>
                 </button>
-                <button *ngIf="isDuplicate(element, element.balance ? 'balances' : 'movements')" mat-mini-fab color="primary" class="upload-btn" (click)="deleteLineAtIndex(index)" title="Supprimer la ligne">
+                <button *ngIf="isDuplicate(element, element.balance ? 'balances' : 'movements')" mat-icon-button color="primary" (click)="deleteLineAtIndex(index)" title="Supprimer la ligne">
                     <mat-icon>delete</mat-icon>
                 </button>
             </td>
@@ -51,7 +51,12 @@
 
 </div>
 
-<div *ngIf="!hasErrors() else congratsContainer" class="p-4 bg-green-400">Parfait, rien à signaler sur ce fichier !</div>
+<ng-container *ngIf="!hasErrors() else congratsContainer">
+    <div class="p-4 bg-green-400">Parfait, rien à signaler sur ce fichier !</div>
+    <div *ngIf="isFromRevalidation" class="mt-4 flex justify-end">
+        <button mat-raised-button color="primary" (click)="downloadCorrectedFile()">Télécharger le fichier</button>
+    </div>
+</ng-container>
 <ng-template #congratsContainer>
     <div class="p-4 bg-red-400">Des erreurs ont été trouvées. Merci de corriger.</div>
 </ng-template>

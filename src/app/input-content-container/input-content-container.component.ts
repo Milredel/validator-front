@@ -26,6 +26,8 @@ export class InputContentContainerComponent {
     isLoading = true;
     validationResponse = {statusCode: 200};
 
+    isFromRevalidation = false;
+
     constructor(private backEndService: BackEndService) {}
 
     ngAfterViewInit() {
@@ -43,6 +45,7 @@ export class InputContentContainerComponent {
         this.backEndService.postValidation(newValidationData).subscribe(data => {
             this.isLoading = false;
             this.validationResponse = data;
+            this.isFromRevalidation = true;
         });
     }
 

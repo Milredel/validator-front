@@ -8,6 +8,6 @@
     }
 
     @if (!isLoading) {
-        <app-input-content-viewer [validationResponse]="validationResponse" (onValidationDataChanged)="onValidationDataChanged($event)"/>
+        <app-input-content-viewer [validationResponse]="validationResponse" [isFromRevalidation]="isFromRevalidation" (onValidationDataChanged)="onValidationDataChanged($event)"/>
     }
 </div>
