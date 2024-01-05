@@ -1,6 +1,6 @@
 # ValidatorFront
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.8.
+Launch ValidatorBack `https://github.com/Milredel/validator` to be able to use this little web app.
 
 ## Development server
 
@@ -14,13 +14,37 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
+## Documentation
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+You upload a file with the movements and balances to test. Must be a .json file with the following structure :
+``
+{
+    "movements": [
+        {"id": 1, "date": "2023-01-23 10:00:00", "label": "First movement", "amount": 10},
+        {"id": 3, "date": "2023-01-23 10:10:00", "label": "Third movement", "amount": 30},
+        {"id": 2, "date": "2023-01-23 10:05:00", "label": "Second movement", "amount": 20},
+        {"id": 4, "date": "2023-01-24 10:00:00", "label": "Fourth movement", "amount": 10},
+        {"id": 5, "date": "2023-01-25 10:10:00", "label": "Fifth movement", "amount": 30},
+        {"id": 6, "date": "2023-01-25 10:05:00", "label": "Sixth movement", "amount": 20}
+    ],
+    "balances": [
+        {"date": "2023-01-24 00:00:00", "balance": 60},
+        {"date": "2023-01-26 00:00:00", "balance": 60}
+    ]
+}
+``
 
-## Running end-to-end tests
+And you'll get the screen below :
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+<img width="767" alt="file OK" src="https://github.com/Milredel/validator-front/assets/2780114/2a488af9-a84a-447d-95f6-31b6fc8e7954">
+
+If the file contains some error, you'll have that screen :
+
+<img width="764" alt="file KO" src="https://github.com/Milredel/validator-front/assets/2780114/5b3215f8-0bd3-46c4-9959-7d194c87749e">
+
+You can use the action button to do some modification, data will be revalidated each time. And if you come to correct the whole file, you'll be able to download the fixed data in a json file :
+
+<img width="763" alt="file OK after edition" src="https://github.com/Milredel/validator-front/assets/2780114/ce1179b1-08f0-41d1-90be-c72d68efc045">
 
 ## Further help
 
