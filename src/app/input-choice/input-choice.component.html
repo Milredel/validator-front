@@ -1,4 +1,4 @@
-<input type="file" class="file-input" [accept]="requiredFileType" (change)="onFileSelected($event)" #fileUpload>
+<input type="file" class="file-input" [accept]="requiredFileType" (change)="onFileSelected($event)" (click)="onInputClick($event)" #fileUpload>
 
 <div class="file-upload">
 

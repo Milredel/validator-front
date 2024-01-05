@@ -18,6 +18,11 @@ export class InputChoiceComponent {
 
     constructor(private backEndService: BackEndService) {}
 
+    onInputClick = (event: MouseEvent) => { // little hack because onChange doesn't fire when selecting same file again
+        const element = event.target as HTMLInputElement
+        element.value = ''
+    }
+
     onFileSelected(event: any): void {
         const file:File = event.target.files[0];
         if (file) {
