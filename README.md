@@ -42,7 +42,11 @@ If the file contains some error, you'll have that screen :
 
 <img width="764" alt="file KO" src="https://github.com/Milredel/validator-front/assets/2780114/5b3215f8-0bd3-46c4-9959-7d194c87749e">
 
-You can use the action button to do some modification, data will be revalidated each time. And if you come to correct the whole file, you'll be able to download the fixed data in a json file :
+You can use the action buttons to do some modifications.
+The trash icon is here to remove a line (when it is a duplicate).
+The wrench icon is here to force change the balance (with the one displayed below the one in bold)
+
+Data will be revalidated each time. And if you come to correct the whole file, you'll be able to download the fixed data in a json file :
 
 <img width="763" alt="file OK after edition" src="https://github.com/Milredel/validator-front/assets/2780114/ce1179b1-08f0-41d1-90be-c72d68efc045">
 
