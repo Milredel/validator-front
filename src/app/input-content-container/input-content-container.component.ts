@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { BackEndService } from '../services/backend.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InputContentViewerComponent } from '../input-content-viewer/input-content-viewer.component';
+import { ValidationData } from '../interfaces/validation-data.interface';
 
 @Component({
     selector: 'app-input-content-container',
@@ -34,6 +35,15 @@ export class InputContentContainerComponent {
                 this.validationResponse = data;
             });
         }
+    }
+
+    onValidationDataChanged = (newValidationData: ValidationData): void => {
+        this.isLoading = true;
+        this.validationResponse = {statusCode: 200};
+        this.backEndService.postValidation(newValidationData).subscribe(data => {
+            this.isLoading = false;
+            this.validationResponse = data;
+        });
     }
 
 }

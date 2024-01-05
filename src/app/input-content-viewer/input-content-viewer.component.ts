@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ValidationResponseType } from '../types/validation-response.type';
 import { MatTableModule } from '@angular/material/table';
@@ -10,6 +10,8 @@ import { DataSource } from '@angular/cdk/collections';
 import { ReplaySubject, Observable } from 'rxjs';
 import { Balance } from '../interfaces/balance.interface';
 import { BalanceError } from '../interfaces/balance-error.interface';
+import { ValidationData } from '../interfaces/validation-data.interface';
+import { Movement } from '../interfaces/movement.interface';
 
 @Component({
     selector: 'app-input-content-viewer',
@@ -20,6 +22,7 @@ import { BalanceError } from '../interfaces/balance-error.interface';
 export class InputContentViewerComponent {
 
     @Input() validationResponse: ValidationResponseType = {statusCode: 200};
+    @Output() onValidationDataChanged = new EventEmitter<ValidationData>();
 
     data: Line[] = [] as unknown as Line[]
     reasons: Reasons = {} as unknown as Reasons
@@ -46,6 +49,7 @@ export class InputContentViewerComponent {
     deleteLineAtIndex = (index: number): void => {
         this.data.splice(index, 1);
         this.dataSource.setData(this.data);
+        this.forceRevalidation()
     }
 
     isBalanceWrong = (element: Line): boolean =>
@@ -56,6 +60,7 @@ export class InputContentViewerComponent {
         if (balanceError) {
             (this.data[index] as Balance).balance = balanceError.diff.computed;
             this.dataSource.setData(this.data);
+            this.forceRevalidation()
         }
     }
 
@@ -68,6 +73,21 @@ export class InputContentViewerComponent {
     getBalanceErrorFromLineIndex = (index: number): BalanceError | undefined => {
         const currentBalance = this.data[index] as Balance;
         return this.reasons.balances.find((line) => line.end.date === currentBalance.date);
+    }
+
+    forceRevalidation = (): void => {
+        this.onValidationDataChanged.emit(this.transformDataToValidationData())
+    }
+
+    transformDataToValidationData = (): ValidationData => {
+        return this.data.reduce((acc, line) => {
+            if (line.hasOwnProperty('balance')) {
+                acc.balances.push(line as Balance)
+            } else {
+                acc.movements.push(line as Movement)
+            }
+            return acc
+        }, {movements: [], balances: []} as ValidationData)
     }
 
 }
