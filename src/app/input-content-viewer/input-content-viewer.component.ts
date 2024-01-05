@@ -13,6 +13,7 @@ import { BalanceError } from '../interfaces/balance-error.interface';
 import { ValidationData } from '../interfaces/validation-data.interface';
 import { Movement } from '../interfaces/movement.interface';
 import { MatButtonModule } from '@angular/material/button';
+import { BackEndService } from '../services/backend.service';
 
 @Component({
     selector: 'app-input-content-viewer',
@@ -25,6 +26,7 @@ export class InputContentViewerComponent {
     @Input() validationResponse: ValidationResponseType = {statusCode: 200};
     @Output() onValidationDataChanged = new EventEmitter<ValidationData>();
     @Input() isFromRevalidation = false;
+    @Input() fileName = '';
 
     data: Line[] = [] as unknown as Line[]
     reasons: Reasons = {} as unknown as Reasons
@@ -32,6 +34,8 @@ export class InputContentViewerComponent {
     displayedColumns: string[] = ['date', 'label', 'amount']
 
     dataSource = new LineDataSource(this.data);
+
+    constructor(private backEndService: BackEndService) {}
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['validationResponse']) {
@@ -93,8 +97,20 @@ export class InputContentViewerComponent {
     }
 
     downloadCorrectedFile = (): void => {
-        console.log('tagada')
-        console.log(this.data)
+        this.backEndService.postCreateValidationFile(this.transformDataToValidationData(), this.fileName).subscribe(
+            response => this.downLoadFile(response, "application/json")
+        )
+    }
+
+    downLoadFile(data: any, type: string) {
+        const fileName = 'corrected-file.json';
+        const a = document.createElement('a');
+        document.body.appendChild(a);
+        const blob = new Blob([data], {type: type});
+        const url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = fileName; a.click();
+        window.URL.revokeObjectURL(url);
     }
 
 }

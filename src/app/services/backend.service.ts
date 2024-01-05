@@ -23,4 +23,8 @@ export class BackEndService {
         return this.httpClient.post<ValidationResponseType>(this.baseUrl + '/movements/validation', data);
     }
   
+    postCreateValidationFile(data: ValidationData, fileName: string) {
+        return this.httpClient.post(this.baseUrl + '/movements/validation/create', {data, fileName}, {responseType: 'arraybuffer'})
+    }
+
 }
