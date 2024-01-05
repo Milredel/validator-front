@@ -8,6 +8,7 @@ import { Reasons } from '../interfaces/reasons.interface';
 import { MatIconModule } from '@angular/material/icon';
 import { DataSource } from '@angular/cdk/collections';
 import { ReplaySubject, Observable } from 'rxjs';
+import { Balance } from '../interfaces/balance.interface';
 
 @Component({
     selector: 'app-input-content-viewer',
@@ -38,15 +39,30 @@ export class InputContentViewerComponent {
 
     hasErrors = (): boolean => !Utils.isEmpty(this.reasons)
 
-    isDuplicate = (element: Line, type: 'balances' | 'movements'): boolean => {
-        const duplicates = this.reasons.duplicates[type]
-        if (!duplicates) return false
-        return duplicates.filter((line) => Utils.compareObjects(line, element)).length > 0
-    }
+    isDuplicate = (element: Line, type: 'balances' | 'movements'): boolean => 
+        !this.reasons.duplicates[type] ? false : this.reasons.duplicates[type].filter((line) => Utils.compareObjects(line, element)).length > 0
 
     deleteLineAtIndex = (index: number): void => {
         this.data.splice(index, 1);
         this.dataSource.setData(this.data);
+    }
+
+    isBalanceWrong = (element: Line): boolean =>
+        !this.reasons.balances ? false : this.reasons.balances.filter((line) => line.end.date === element.date).length > 0
+
+    correctBalanceAtIndex = (index: number): void => {
+        const currentBalance = this.data[index] as Balance;
+        const balanceError = this.reasons.balances.find((line) => line.end.date === currentBalance.date);
+        if (balanceError) {
+            (this.data[index] as Balance).balance = balanceError.diff.computed;
+            this.dataSource.setData(this.data);
+        }
+    }
+
+    getCorrectBalance = (index: number): number => {
+        const currentBalance = this.data[index] as Balance;
+        const balanceError = this.reasons.balances.find((line) => line.end.date === currentBalance.date);
+        return balanceError ? balanceError.diff.computed : currentBalance.balance
     }
 
 }
