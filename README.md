@@ -14,6 +14,10 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
+## Test
+
+Run `ng test` to test the project.
+
 ## Documentation
 
 You upload a file with the movements and balances to test. Must be a .json file with the following structure :
